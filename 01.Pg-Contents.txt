@@ -1,0 +1,27 @@
+Postgres setup for Pre-production servers with Minimum Resource Requirements (CPU / RAM etc):
+	Containerization with Docker or Kubernetes for lightweight resource allocation
+	Automated provisioning and configuration management using tools like Ansible or Terraform
+	Fine-tuning PostgreSQL configuration parameters for optimized performance on constrained resources
+
+Postgres setup for Production servers with best practices:
+	Implementing a multi-node PostgreSQL cluster for high availability and load balancing
+	Implementing security measures such as encryption, role-based access control, and auditing to protect sensitive data
+	
+Postgres setup for Hot and Cold Data:
+	Differentiating between hot data (frequently accessed) and cold data (infrequently accessed).
+	Analyzing access patterns and data usage to identify hot and cold data segments.
+	Basic overview of partitioning techniques such as range, list, and hash partitioning.
+	
+Functions and Stored Procedures best practices:
+	Implementing error handling 
+	Implementing transaction management within stored procedures to ensure data integrity
+	
+
+Backup and Archival processes:
+	Implementing automated backup solutions such as pgBackRest, Barman, or pg_dump for regular backups
+	
+Performance Optimization of Database:
+	Optimizing database schema design, including normalization, denormalization, and table partitioning
+
+High Availability and Fault Tolerance:
+	Implementing data redundancy and data center failover strategies to ensure continuous operation in case of hardware or network failures

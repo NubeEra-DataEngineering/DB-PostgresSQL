@@ -1,0 +1,36 @@
+cat<<EOF > backup.sh
+
+#!/bin/bash
+
+# PostgreSQL database connection details
+PG_HOST="localhost"
+PG_PORT="5432"
+PG_USER="user"
+PG_DB="db1"
+
+# Backup directory
+BACKUP_DIR="/path/to/backup/directory"
+
+# Timestamp for backup filename
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+
+# Perform backup using pg_dump
+pg_dump -h $PG_HOST -p $PG_PORT -U $PG_USER $PG_DB > $BACKUP_DIR/$TIMESTAMP.sql
+  
+EOF
+
+
+chmod +x backup.sh
+
+
+./backup.sh
+
+
+
+
+This cron job runs the backup script (backup.sh) daily at midnight (0 minutes, 0 hours).
+0 0 * * * /path/to/backup.sh >> /path/to/backup.log 2>&1
+
+
+Monitoring & Logs:
+backup.log

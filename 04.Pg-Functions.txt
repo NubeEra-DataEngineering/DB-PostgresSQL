@@ -1,0 +1,51 @@
+CREATE OR REPLACE FUNCTION safe_update_user(user_id INT, new_username TEXT)
+RETURNS VOID AS $$
+BEGIN
+    BEGIN
+        UPDATE users SET username = new_username WHERE id = user_id;
+    EXCEPTION
+        WHEN others THEN
+            -- Log error and handle appropriately
+            RAISE NOTICE 'Error updating user: %', SQLERRM;
+    END;
+END;
+$$ LANGUAGE plpgsql;
+
+
+________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+Transaction Management & Data Integrity:
+Using Postgresql Function Implementing transaction management within stored procedures to ensure data integrity
+
+
+CREATE OR REPLACE FUNCTION update_employee_salary(emp_id INT, new_salary NUMERIC) RETURNS VOID AS $$
+DECLARE
+    v_employee_exists BOOLEAN;
+BEGIN
+    -- Check if the employee exists
+    SELECT EXISTS(SELECT 1 FROM employees WHERE employee_id = emp_id) INTO v_employee_exists;
+
+    -- Begin the transaction
+    BEGIN
+        -- Check if the employee exists
+        IF NOT v_employee_exists THEN
+            RAISE EXCEPTION 'Employee with ID % does not exist', emp_id;
+        END IF;
+
+        -- Update the employee's salary
+        UPDATE employees SET salary = new_salary WHERE employee_id = emp_id;
+
+        -- Additional SQL statements can be added here
+
+        -- Commit the transaction
+        COMMIT;
+    EXCEPTION
+        -- Rollback the transaction on error
+        WHEN others THEN
+            ROLLBACK;
+            -- Log the error
+            RAISE NOTICE 'Error updating salary for employee %: %', emp_id, SQLERRM;
+    END;
+END;
+$$ LANGUAGE plpgsql;
+
+________________________________________________________________________________________________________________________________________________________________________________________________________________________________

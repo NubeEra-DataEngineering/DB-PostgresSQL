@@ -1,0 +1,42 @@
+cat<<EOF > docker-compose.yml
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: "user1"
+      POSTGRES_PASSWORD: "123"
+      POSTGRES_DB: "db1"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - postgres_network
+networks:
+  postgres_network:
+volumes:
+  postgres_data:
+EOF
+
+cat<<EOF > init.sql
+CREATE TABLE IF NOT EXISTS employees(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    age INT
+);Postgres setup for Hot and Cold Data
+
+EOF
+
+docker-compose up -d
+
+docker ps
+
+docker exec -it 6ccfa4831121 psql -h localhost -U user1 -d db1
+
+\dt
+
+select * from employees;
+
